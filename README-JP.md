@@ -61,6 +61,11 @@ https://github.com/NABSA/gbfs/blob/master/systems.csv
   
 ![image](https://user-images.githubusercontent.com/13606213/176124772-030c3a76-90fb-427a-ab91-bd4c7701afdd.png)
 
+
+詳細ボタンを選択すると、GBFS公式Githubより各社のGBFSデータのURLが一覧表示されます。どれか一行を選択してウィンドウを閉じると、URLが転記されます。  
+![image](https://user-images.githubusercontent.com/13606213/176148240-3471a297-070f-4896-ac2f-b4c4ac406380.png)
+
+
 ## 2.言語選択  
   
 指定したGBFSファイルが多言語対応している場合、GBFSメインファイルには各言語のファイルリンクが入っています（多言語対応の状況は事業者に依存します）。  
