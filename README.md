@@ -1,4 +1,4 @@
-# GBFS-NOW（Beta）
+# GBFS-NOW
 
 
 このQGISプラグインはGBFSデータの取得から表示までを行います。  
