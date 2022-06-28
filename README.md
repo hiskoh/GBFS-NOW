@@ -1,3 +1,8 @@
+README（日本語版）はこちらをご覧ください  
+https://github.com/hiskoh/GBFS-NOW/blob/main/README-JP.md
+
+---
+
 # GBFS-NOW
 
 This QGIS plug-in performs everything from acquisition to display of GBFS data.
@@ -7,14 +12,18 @@ https://github.com/NABSA/gbfs
 
 The following two services are supported in Japan as of June 28, 2022.  
 
-**HELLO CYCLING**  
-　Share cycle stations affiliated with HELLO CYCLING are available in Japan (5,009 stations).  
+---
+**- HELLO CYCLING**  
+　Share cycle stations affiliated with HELLO CYCLING are available in Japan（**5,009 Stations**）  
 　https://www.hellocycling.jp/   
+　GBFS.json-URL https://api.odpt.org/api/v4/gbfs/hellocycling/gbfs.json
     
-**docomo Bike Share tokyo**
-　Tokyo Bike Sharing ports operated by docomo are available to the public (1,077 ports).  
+**- docomo Bike Share tokyo**  
+　Tokyo Bike Sharing ports operated by docomo are available to the public（**1,077 Ports**）  
 　https://docomo-cycle.jp/tokyo-project/  
+　GBFS.json-URL https://api.odpt.org/api/v4/gbfs/docomo-cycle-tokyo/gbfs.json
  
+--- 
  
 > **Note**
 > This Plugin for QGIS 3.22 and GBFSver2.3.The published data of the ODPT (https://www.odpt.org/) is not strictly GBFS compliant.
