@@ -76,6 +76,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         #画面入力URLを取得
         gbfs_json = self.gbfs_url.text()
         
+        #画面入力Tokenを取得 ※ODPT独自仕様（https://www.odpt.org/）
+        gbfs_json = gbfs_json + '?acl:consumerKey=' + self.token.text()
+        
         #gbfs.json requests
         try:
             response = requests.get(gbfs_json)
@@ -139,5 +142,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         feeds = self.gbfs_json_data[self.gbfs_language]["feeds"]
         item = next((item for item in feeds if item['name'] == filename), None)
         file_url = item["url"] if item is not None else None
-        return file_url
+        
+        #ODPT独自仕様（https://www.odpt.org/）
+        return file_url + '?acl:consumerKey=' + self.token.text()
+        
+        #return file_url
         
