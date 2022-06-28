@@ -10,25 +10,19 @@ GBFS (General Bikeshare Feed Specification) is an international standard for mic
   
 https://github.com/NABSA/gbfs  
 
-なお日本国内において2022年6月28日時点で対応しているサービスは次の２サービスです。
+なお日本国内において2022年6月28日時点で対応しているサービスは次の２サービスです。  
+The following two services are supported in Japan as of June 28, 2022.  
 
 **HELLO CYCLING**  
 　日本全国のHELLO CYCLINGに加盟するシェアサイクルステーションを公開（5,009ステーション）  
+　Share cycle stations affiliated with HELLO CYCLING are available in Japan (5,009 stations).  
 　https://www.hellocycling.jp/   
     
-**ドコモ・バイクシェア(東京)**  
-　ドコモの運営する東京自転車シェアリングのポートを公開（1,077ポート）  
-　https://docomo-cycle.jp/tokyo-project/  
-   
-The following two services are supported in Japan as of June 28, 2022.
-
-HELLO CYCLING  
-　Share cycle stations affiliated with HELLO CYCLING are available in Japan (5,009 stations).  
-  https://www.hellocycling.jp/   
-    
-docomo Bike Share  
+**docomo Bike Share tokyo**
+　ドコモの運営する東京自転車シェアリングのポートを公開（1,077ポート） 
 　Tokyo Bike Sharing ports operated by docomo are available to the public (1,077 ports).  
 　https://docomo-cycle.jp/tokyo-project/  
+ 
  
 > **Note**
 > このQGISプラグインはQGIS3.2およびGBFSver2.3で動作確認をしています。また、日本のODPT（https://www.odpt.org/ ）で公開でされるデータは厳密にはGBFS仕様に準拠しておらず、独自のAccessトークンが必要となっています。本プラグインは同仕様もサポートしています。  
@@ -123,3 +117,5 @@ What will be displayed
 ![image](https://user-images.githubusercontent.com/13606213/176126371-1f34ce41-d145-4223-9249-95b850316080.png)
 
 ![image](https://user-images.githubusercontent.com/13606213/176125981-68504f01-3ca0-4319-baec-4b56d75582a2.png)
+
+Let's get started.
