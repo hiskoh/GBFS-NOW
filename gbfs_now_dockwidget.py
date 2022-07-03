@@ -76,8 +76,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         #画面入力URLを取得
         gbfs_json = self.gbfs_url.text()
         
-        #画面入力Tokenを取得 ※ODPT独自仕様（https://www.odpt.org/）
-        gbfs_json = gbfs_json + '?acl:consumerKey=' + self.token.text()
+        #画面入力Tokenを追記 ※ODPT独自仕様（https://www.odpt.org/）
+        if 'https://api.odpt.org/' in gbfs_json :
+            gbfs_json = gbfs_json + '?acl:consumerKey=' + self.token.text()
         
         #gbfs.json requests
         try:
@@ -85,10 +86,17 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             response.raise_for_status()
             
         except requests.exceptions.RequestException:
-            contents = [["No data... Check the url."]]
+            contents = [[]]
+            self.result_get_gbfs.setText("No data... Check the url.")
+            
         else:
             text = response.text
             data = json.loads(text)
+            
+            #取得したGBFSのバージョンを表示
+            gbfs_ver = str(data["version"]) if "version" in data else '1.0' #json取得はできたがversionのキーが無いとき、GBGFv1.0とみなす
+            
+            self.result_get_gbfs.setText('gbfs_version : ' + gbfs_ver)
             
             self.gbfs_json_data = data["data"]
             contents = [[language] for language in data["data"].keys()]
@@ -136,15 +144,23 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 nSta_now.create_gbfs_station_now_layer_jp(self,station_status_url)
             elif station_status_url != None and not self.jpStyle.isChecked():
                 nSta_now.create_gbfs_station_now_layer(self,station_status_url)
-            
+                
+        #ステーションタイプ/ドックレスタイプの表示
+        if station_info_url != None:
+            self.label_type.setText('systems with docking stations')
+        else:
+            self.label_type.setText('dockless system')
+                            
     #gbfs.jsonからgbfs構成jsonのURLを取得
     def get_gbfs_each_url(self,filename):
         feeds = self.gbfs_json_data[self.gbfs_language]["feeds"]
         item = next((item for item in feeds if item['name'] == filename), None)
-        file_url = item["url"] if item is not None else None
+        
+        file_url = item["url"]  if item is not None else None
         
         #ODPT独自仕様（https://www.odpt.org/）
-        return file_url + '?acl:consumerKey=' + self.token.text()
+        if file_url is not None and 'https://api.odpt.org/' in file_url:
+            file_url = file_url +  '?acl:consumerKey=' + self.token.text() 
         
-        #return file_url
+        return file_url 
         
