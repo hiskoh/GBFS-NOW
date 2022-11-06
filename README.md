@@ -10,25 +10,21 @@ GBFS (General Bikeshare Feed Specification) is an international standard for mic
   
 https://github.com/NABSA/gbfs  
 
-The following two services are supported in Japan as of June 28, 2022.  
+The following two services are supported in Japan as of November 06, 2022.  
 
 ---
 **- HELLO CYCLING**  
-　Share cycle stations affiliated with HELLO CYCLING are available in Japan（**5,009 Stations**）  
+　Share cycle stations affiliated with HELLO CYCLING are available in Japan（**5,569 Stations**）  
 　https://www.hellocycling.jp/   
 　GBFS.json-URL https://api.odpt.org/api/v4/gbfs/hellocycling/gbfs.json
     
 **- docomo Bike Share tokyo**  
-　Tokyo Bike Sharing ports operated by docomo are available to the public（**1,077 Ports**）  
+　Tokyo Bike Sharing ports operated by docomo are available to the public（**1,162 Ports**）  
 　https://docomo-cycle.jp/tokyo-project/  
 　GBFS.json-URL https://api.odpt.org/api/v4/gbfs/docomo-cycle-tokyo/gbfs.json
  
 --- 
  
-> **Note**
-> This Plugin for QGIS 3.22 and GBFSver2.3.The published data of the ODPT (https://www.odpt.org/) is not strictly GBFS compliant.
-This data requires an Access token, so the plug-in is also compliant with the same specification.
-
 > **Note**
 > This QGIS plug-in is intended for visualization of GBFS data (station locations) for station-based shared mobility services. It does not implement visualization for dockless services.
 
@@ -61,13 +57,6 @@ The catalog list is obtained from this URL.
 
 https://github.com/NABSA/gbfs/blob/master/systems.csv  
   
-> **Note**
-> The data published on the Japanese ODPT (https://www.odpt.org/) does not strictly conform to the GBFS specification and requires a unique Access token. Please enter the access token following the URL of the main file. Access tokens can be obtained by registering as a developer with ODPT.
-
-  
-![image](https://user-images.githubusercontent.com/13606213/176124772-030c3a76-90fb-427a-ab91-bd4c7701afdd.png)
-
-
 Selecting the Details button will list the URLs of each company's GBFS data from the official GBFS Github. Select one of the lines and close the window to transcribe the URL.
 ![image](https://user-images.githubusercontent.com/13606213/176148240-3471a297-070f-4896-ac2f-b4c4ac406380.png)
 
