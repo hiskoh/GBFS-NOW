@@ -7,16 +7,16 @@ GBFS（General Bikeshare Feed Specification）はマイクロモビリティデ�
 
 https://github.com/NABSA/gbfs  
 
-なお日本国内において2022年6月28日時点で対応しているサービスは次の２サービスです。  
+なお日本国内において2022年11月06日時点で対応しているサービスは次の２サービスです。  
 
 ---
 **- HELLO CYCLING**  
-　日本全国のHELLO CYCLINGに加盟するシェアサイクルステーションを公開（**5,009ステーション**）  
+　日本全国のHELLO CYCLINGに加盟するシェアサイクルステーションを公開（**5,569ステーション**）  
 　https://www.hellocycling.jp/   
 　GBFSメインファイルのURLはhttps://api.odpt.org/api/v4/gbfs/hellocycling/gbfs.json
     
 **- docomo Bike Share tokyo**  
-　ドコモの運営する東京自転車シェアリングのポートを公開（**1,077ポート**）  
+　ドコモの運営する東京自転車シェアリングのポートを公開（**1,162ポート**）  
 　https://docomo-cycle.jp/tokyo-project/  
 　GBFSメインファイルのURLはhttps://api.odpt.org/api/v4/gbfs/docomo-cycle-tokyo/gbfs.json
  
@@ -24,7 +24,7 @@ https://github.com/NABSA/gbfs
  
  
 > **Note**
-> このQGISプラグインはQGIS3.2およびGBFSver2.3で動作確認をしています。また、日本のODPT（https://www.odpt.org/ ）で公開でされるデータは厳密にはGBFS仕様に準拠しておらず、独自のAccessトークンが必要となっています。本プラグインは同仕様もサポートしています。  
+> このQGISプラグインはQGIS3.2およびGBFSver2.3で動作確認をしています。
 
 > **Note**
 > このQGISプラグインはステーション型シェアモビリティサービスのGBFSデータ（ステーション所在地）の可視化を想定しています。ドックレス型サービスの可視化は実装していませんのでご注意ください。  
@@ -56,11 +56,6 @@ GBFSを見るまでに３ステップあります。
   
 https://github.com/NABSA/gbfs/blob/master/systems.csv  
   
-> **Note**
-> 日本のODPT（https://www.odpt.org/ ）で公開でされるデータは厳密にはGBFS仕様に準拠しておらず、独自のAccessトークンが必要となっています。メインファイルのURLに続きアクセストークンを入力してください。アクセストークンはODPTに開発者登録することで取得できます。  
-  
-![image](https://user-images.githubusercontent.com/13606213/176124772-030c3a76-90fb-427a-ab91-bd4c7701afdd.png)
-
 
 詳細ボタンを選択すると、GBFS公式Githubより各社のGBFSデータのURLが一覧表示されます。どれか一行を選択してウィンドウを閉じると、URLが転記されます。  
 ![image](https://user-images.githubusercontent.com/13606213/176148240-3471a297-070f-4896-ac2f-b4c4ac406380.png)
