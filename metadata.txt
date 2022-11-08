@@ -5,15 +5,16 @@
 [general]
 name=GBFS-NOW
 qgisMinimumVersion=3.0
-description=view gbfs-data
-version=0.1
+description=GBFS-NOW
+version=1.0
 author=Kohta Hisadomi
 email=his.koh3.biz@gmail.com
 
-about=Provide a brief description of the plugin and its purpose.
+about= This QGIS plug-in performs everything from acquisition to display of GBFS data. GBFS (General Bikeshare Feed Specification) is an international standard for micromobility data, and many shared mobility operators publish their data under this standard.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/hiskoh/GBFS-NOW/issues
+repository=https://github.com/hiskoh/GBFS-NOW
+
 # End of mandatory metadata
 
 # Recommended items:
@@ -23,11 +24,12 @@ hasProcessingProvider=no
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python,mobility
+tags=gbfs,bikeshare,mobility
 
-homepage=http://homepage
+homepage=https://github.com/hiskoh/GBFS-NOW
 category=Web
 icon=icon.png
+
 # experimental flag
 experimental=False
 
