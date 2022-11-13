@@ -5,8 +5,8 @@ https://github.com/hiskoh/GBFS-NOW/blob/main/README-JP.md
 
 # GBFS-NOW
 
-This QGIS plug-in performs everything from acquisition to display of GBFS data.
-GBFS (General Bikeshare Feed Specification) is an international standard for micromobility data, and many shared mobility operators publish their data under this standard.The GBFS data specification is available on Github.  
+GBFS-NOW is a QGIS plugin for displaying GBFS data. GBFS(General Bikeshare Feed Specification) is the open data standard for shared mobility. Many shared mobility operators publish their data under this standard.
+The GBFS data specification is available on Github.  
   
 https://github.com/NABSA/gbfs  
 
