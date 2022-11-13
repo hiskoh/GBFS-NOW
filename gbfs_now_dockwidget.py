@@ -33,6 +33,7 @@ from qgis.PyQt.QtCore import QVariant
 from . import gbfs_now_system_info as nSys
 from . import gbfs_now_stations as nSta
 from . import gbfs_now_stations_status as nSta_now
+from . import gbfs_now_free_bike_status as nFBike
 from . import gbfs_now_search_dialog as nSch
 from . import table_model
 
@@ -123,6 +124,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         gbfs_system_info_url = self.get_gbfs_each_url('system_information')
         nSys.create_gbfs_system_info_viewer(self,gbfs_system_info_url)
         
+        
+        #station-type -------	
+        
         #ステーションレイヤの表示
         station_info_url = self.get_gbfs_each_url('station_information')
         
@@ -140,6 +144,19 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
                 nSta_now.create_gbfs_station_now_layer_jp(self,station_status_url)
             elif station_status_url != None and not self.jpStyle.isChecked():
                 nSta_now.create_gbfs_station_now_layer(self,station_status_url)
+                
+                
+        #dockless-type ------
+        
+        #free bikeレイヤの表示
+        free_bike_status_url = self.get_gbfs_each_url('free_bike_status')
+        
+        if free_bike_status_url != None:
+            if self.jpStyle.isChecked():
+                nFBike.create_gbfs_free_bike_layer_jp(self,free_bike_status_url)         	
+            else:
+                nFBike.create_gbfs_free_bike_layer(self,free_bike_status_url) 
+        
                 
         #ステーションタイプ/ドックレスタイプの表示
         if station_info_url != None:
