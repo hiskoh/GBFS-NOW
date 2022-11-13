@@ -6,6 +6,7 @@ from qgis.core import *
 from qgis.PyQt import QtGui, QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.PyQt.QtCore import QVariant
+from qgis.PyQt.QtCore import QSortFilterProxyModel
 
 from . import table_model
 
@@ -21,19 +22,29 @@ class gbfs_now_search_Dialog(QtWidgets.QDialog):
         
         #GBFSリスト検索→表示
         self.get_gbfs_list()
-        self.get_gbfs_button.clicked.connect(self.get_gbfs_list) 
-        
         
     def get_gbfs_list(self):
         
         
-        #get data
-        url = self.gbfs_list_url.text()
+        #Github repository
+        url = 'https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv'
+        
+        #get gbfs_list
         df = pd.read_csv(url)
         
         #TableView更新
         model = table_model.createTableModel(df.values.tolist(), ["Country Code","Name","Location","System ID","URL","Auto-Discovery URL"])
-        self.gbfs_list.setModel(model)
+        #self.gbfs_list.setModel(model)
+        
+        self.proxy_model = QSortFilterProxyModel()
+        self.proxy_model.setFilterKeyColumn(-1)
+        self.proxy_model.setSourceModel(model)
+        self.gbfs_list.setModel(self.proxy_model)
+        
+        #searchbar
+        self.searchbar.textChanged.connect(self.proxy_model.setFilterFixedString)
+        
+        #search bar---
         
 
     def get_url(self):
