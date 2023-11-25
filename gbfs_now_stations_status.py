@@ -74,7 +74,6 @@ def create_gbfs_station_now_layer(self,url):
     
     # saving changes and adding the layer
     layer.updateExtents() 
-    QgsProject.instance().addMapLayer(layer)
     
     #set layer symbol
     symbol = QgsRasterMarkerSymbolLayer(STATION_PNG_PATH)
@@ -82,6 +81,7 @@ def create_gbfs_station_now_layer(self,url):
     layer.renderer().symbol().changeSymbolLayer(0, symbol )
 
     layer.commitChanges()
+    QgsProject.instance().addMapLayer(layer)
 
 
 #ステーション ステータス情報を表示（jpStyle）
@@ -153,7 +153,6 @@ def create_gbfs_station_now_layer_jp(self,url):
     
     # saving changes and adding the layer
     layer.updateExtents() 
-    QgsProject.instance().addMapLayer(layer)
 
     #set layer symbol
     symbol = QgsRasterMarkerSymbolLayer(STATION_PNG_PATH)
@@ -161,3 +160,4 @@ def create_gbfs_station_now_layer_jp(self,url):
     layer.renderer().symbol().changeSymbolLayer(0, symbol )
 
     layer.commitChanges()
+    QgsProject.instance().addMapLayer(layer)

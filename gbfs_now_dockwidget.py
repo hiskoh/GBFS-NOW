@@ -32,6 +32,7 @@ from qgis.PyQt.QtCore import QVariant
 
 from . import gbfs_now_system_info as nSys
 from . import gbfs_now_stations as nSta
+from . import gbfs_now_vehicle_types as vt #---------------------------------
 from . import gbfs_now_stations_status as nSta_now
 from . import gbfs_now_free_bike_status as nFBike
 from . import gbfs_now_search_dialog as nSch
@@ -113,6 +114,7 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         
         if self.gbfs_json_data == None:
             nSys.clear_gbfs_system_info_viewer(self)
+            vt.clear_gbfs_vehicle_types_viewer(self)
             return
         
         #表示したい言語（選択した言語）の取得
@@ -124,6 +126,12 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         gbfs_system_info_url = self.get_gbfs_each_url('system_information')
         nSys.create_gbfs_system_info_viewer(self,gbfs_system_info_url)
         
+        #vehicle_types情報の表示
+        gbfs_vehicle_types_url = self.get_gbfs_each_url('vehicle_types')
+        if gbfs_vehicle_types_url != None:
+            vt.create_gbfs_vehicle_types_viewer(self,gbfs_vehicle_types_url)
+        else:
+            vt.clear_gbfs_vehicle_types_viewer(self)
         
         #station-type -------	
         

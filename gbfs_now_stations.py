@@ -40,7 +40,7 @@ def create_gbfs_station_layer(self,url):
         QgsField('parking_hoop'          , QVariant.Bool),   
         QgsField('contact_phone '        , QVariant.String), 
         #QgsField('vehicle_capacity'      , QVariant.String), 
-        #QgsField('vehicle_type_capacity' , QVariant.String), 
+        QgsField('vehicle_type_capacity' , QVariant.String), 
         QgsField('is_valet_station'      , QVariant.Bool),   
         QgsField('is_charging_station'   , QVariant.Bool), 
         QgsField('android'               , QVariant.String), 
@@ -76,7 +76,7 @@ def create_gbfs_station_layer(self,url):
         feature.append(station['parking_hoop'         ] if 'parking_hoop'          in station else None)
         feature.append(station['contact_phone '       ] if 'contact_phone '        in station else None)
         #feature.append(station['vehicle_capacity'     ] if 'vehicle_capacity'      in station else None)
-        #feature.append(station['vehicle_type_capacity'] if 'vehicle_type_capacity' in station else None)
+        feature.append('\n'.join([f"{key}: {value}" for key, value in station['vehicle_type_capacity'].items()]) if 'vehicle_type_capacity' in station else None)
         feature.append(station['is_valet_station'     ] if 'is_valet_station'      in station else None)
         feature.append(station['is_charging_station'  ] if 'is_charging_station'   in station else None)
         feature.append(station['android'              ] if 'android'               in station else None)
@@ -90,7 +90,6 @@ def create_gbfs_station_layer(self,url):
     
     # saving changes and adding the layer
     layer.updateExtents() 
-    QgsProject.instance().addMapLayer(layer)
     
     #set layer symbol
     symbol = QgsRasterMarkerSymbolLayer(STATION_PNG_PATH)
@@ -98,6 +97,7 @@ def create_gbfs_station_layer(self,url):
     layer.renderer().symbol().changeSymbolLayer(0, symbol )
     
     layer.commitChanges()
+    QgsProject.instance().addMapLayer(layer)
 
 #ステーション情報を表示(jp-style)
 def create_gbfs_station_layer_jp(self,url):
@@ -134,7 +134,7 @@ def create_gbfs_station_layer_jp(self,url):
         QgsField('駐輪フープフラグ'          , QVariant.Bool), 
         QgsField('電話番号'        , QVariant.String),  
         #QgsField('vehicle_capacity'      , QVariant.String), 
-        #QgsField('vehicle_type_capacity' , QVariant.String), 
+        QgsField('vehicle_type_capacity' , QVariant.String), 
         QgsField('係員フラグ'      , QVariant.String), 
         QgsField('チャージャーステーションフラグ'   , QVariant.Bool), 
         QgsField('android-uri'               , QVariant.String), 
@@ -170,7 +170,7 @@ def create_gbfs_station_layer_jp(self,url):
         feature.append(station['parking_hoop'         ] if 'parking_hoop'          in station else None)
         feature.append(station['contact_phone '       ] if 'contact_phone '        in station else None)
         #feature.append(station['vehicle_capacity'     ] if 'vehicle_capacity'      in station else None)
-        #feature.append(station['vehicle_type_capacity'] if 'vehicle_type_capacity' in station else None)
+        feature.append('\n'.join([f"{key}: {value}" for key, value in station['vehicle_type_capacity'].items()]) if 'vehicle_type_capacity' in station else None)
         feature.append(station['is_valet_station'     ] if 'is_valet_station'      in station else None)
         feature.append(station['is_charging_station'  ] if 'is_charging_station'   in station else None)
         feature.append(station['android'              ] if 'android'               in station else None)
@@ -184,7 +184,6 @@ def create_gbfs_station_layer_jp(self,url):
     
     # saving changes and adding the layer
     layer.updateExtents() 
-    QgsProject.instance().addMapLayer(layer)
     
     #set layer symbol
     symbol = QgsRasterMarkerSymbolLayer(STATION_PNG_PATH)
@@ -192,4 +191,5 @@ def create_gbfs_station_layer_jp(self,url):
     layer.renderer().symbol().changeSymbolLayer(0, symbol )
 
     layer.commitChanges()
+    QgsProject.instance().addMapLayer(layer)
         

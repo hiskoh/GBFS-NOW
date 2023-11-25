@@ -1,8 +1,9 @@
 import requests, json
 
 from qgis.core import *
-from qgis.PyQt.QtCore import QVariant
-
+from qgis.PyQt.QtCore import QVariant,Qt,QUrl
+from qgis.PyQt.QtGui import QPixmap
+from qgis.PyQt.QtNetwork import QNetworkAccessManager, QNetworkRequest,QNetworkReply
 
 def create_gbfs_system_info_viewer(self,url):
  
@@ -56,9 +57,11 @@ def create_gbfs_system_info_viewer(self,url):
         android_store_uri = item["rental_apps"]["android"]["store_uri"] if "android" in item["rental_apps"] and "store_uri" else ''
         ios_store_uri = item["rental_apps"]["ios"]["store_uri"] if "ios" in item["rental_apps"] and "store_uri" else ''
     
+    #ブランド画像のダウンロード＆表示
+    download_image(self,self.brand_image,brand_image_url)
+
     #ラベル表示
     self.label_name.setText(name)
-#    self.image_brand_image_url.setText(brand_image_url)
 #    self.label_short_name.setText(short_name)
     self.label_language.setText(language)
     self.label_operator.setText(operator)
@@ -72,8 +75,22 @@ def create_gbfs_system_info_viewer(self,url):
     self.label_android.setText("<a href=\""+ android_store_uri +"\">" + android_store_uri +"</a>")
     self.label_ios.setText("<a href=\""+ ios_store_uri +"\">" + ios_store_uri +"</a>")
 
+def download_image(self, target_label, url):
+    self.manager = QNetworkAccessManager()
+    self.manager.finished.connect(lambda reply: set_image(self, reply, target_label))
+    self.manager.get(QNetworkRequest(QUrl(url)))
 
-
+def set_image(self, reply, target_label):
+    if reply.error() == QNetworkReply.NoError:
+        data = reply.readAll()
+        pixmap = QPixmap()
+        pixmap.loadFromData(data)
+        scaled_pixmap = pixmap.scaled(150, 150, Qt.KeepAspectRatio)  # サイズ変更
+        target_label.setPixmap(scaled_pixmap)
+    else:
+        target_label.clear()
+    
+    
 def clear_gbfs_system_info_viewer(self):
     self.label_name.clear()
     self.label_language.clear()

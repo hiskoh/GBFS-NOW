@@ -78,7 +78,6 @@ def create_gbfs_free_bike_layer(self,url):
     
     # saving changes and adding the layer
     layer.updateExtents() 
-    QgsProject.instance().addMapLayer(layer)
     
     #set layer symbol
     symbol = QgsRasterMarkerSymbolLayer(BIKE_PNG_PATH)
@@ -86,6 +85,7 @@ def create_gbfs_free_bike_layer(self,url):
     layer.renderer().symbol().changeSymbolLayer(0, symbol )
     
     layer.commitChanges()
+    QgsProject.instance().addMapLayer(layer)
 
 #ステーション情報を表示(jp-style)
 def create_gbfs_free_bike_layer_jp(self,url):
@@ -161,7 +161,6 @@ def create_gbfs_free_bike_layer_jp(self,url):
     
     # saving changes and adding the layer
     layer.updateExtents() 
-    QgsProject.instance().addMapLayer(layer)
     
     #set layer symbol
     symbol = QgsRasterMarkerSymbolLayer(BIKE_PNG_PATH)
@@ -169,4 +168,5 @@ def create_gbfs_free_bike_layer_jp(self,url):
     layer.renderer().symbol().changeSymbolLayer(0, symbol )
     
     layer.commitChanges()
+    QgsProject.instance().addMapLayer(layer)
         
