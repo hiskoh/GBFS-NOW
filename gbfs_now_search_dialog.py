@@ -27,13 +27,16 @@ class gbfs_now_search_Dialog(QtWidgets.QDialog):
         
         
         #Github repository
-        url = 'https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv'
+        url = 'https://raw.githubusercontent.com/MobilityData/gbfs/master/systems.csv'
         
         #get gbfs_list
-        df = pd.read_csv(url)
+        try:
+            df = pd.read_csv(url, quotechar='"', skipinitialspace=True, error_bad_lines=False, warn_bad_lines=True)
+        except Exception as e:
+            print("エラーが発生しました:", e)
         
         #TableView更新
-        model = table_model.createTableModel(df.values.tolist(), ["Country Code","Name","Location","System ID","URL","Auto-Discovery URL"])
+        model = table_model.createTableModel(df.values.tolist(), ["Country Code","Name","Location","System ID","URL","Auto-Discovery URL","Authentication Info"])
         #self.gbfs_list.setModel(model)
         
         self.proxy_model = QSortFilterProxyModel()
