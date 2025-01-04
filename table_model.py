@@ -14,6 +14,9 @@ class createTableModel(QAbstractTableModel):
         return len(self.list)
 
     def columnCount(self, parent):
+        # リストが空の場合は列数を0として返す
+        if not self.list or not self.list[0]:
+            return 0
         return len(self.list[0])
 
     def flags(self, index):

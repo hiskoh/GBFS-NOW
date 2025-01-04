@@ -31,12 +31,22 @@ class gbfs_now_search_Dialog(QtWidgets.QDialog):
         
         #get gbfs_list
         try:
-            df = pd.read_csv(url, quotechar='"', skipinitialspace=True, error_bad_lines=False, warn_bad_lines=True)
+            df = pd.read_csv(url, quotechar='"', skipinitialspace=True)
         except Exception as e:
             print("エラーが発生しました:", e)
+            # 空のデータフレームで初期化
+            df = pd.DataFrame(columns=["Country Code","Name","Location","System ID","URL","Auto-Discovery URL","Supported Versions","Authentication Info"])
+        
+        # DataFrameが空の場合の処理
+        if df.empty:
+            print("データが取得できませんでした。")
+            contents = []
+        else:
+            contents = df.values.tolist()
+    
         
         #TableView更新
-        model = table_model.createTableModel(df.values.tolist(), ["Country Code","Name","Location","System ID","URL","Auto-Discovery URL","Authentication Info"])
+        model = table_model.createTableModel(df.values.tolist(), ["Country Code","Name","Location","System ID","URL","Auto-Discovery URL","Supported Versions","Authentication Info"])
         #self.gbfs_list.setModel(model)
         
         self.proxy_model = QSortFilterProxyModel()
