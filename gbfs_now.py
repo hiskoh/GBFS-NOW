@@ -8,11 +8,10 @@ from qgis.PyQt.QtWidgets import QAction
 
 from . import resources
 from .gbfs_now_core.catalog import prefetch_systems_catalog
-from .gbfs_now_core.qt_compat import compatible_qt
+from .gbfs_now_core.qt_compat import enum_value
 from .gbfs_now_dockwidget import gbfs_nowDockWidget
 
 
-qt = compatible_qt(Qt)
 
 
 class gbfs_now:
@@ -55,7 +54,9 @@ class gbfs_now:
             if self.dockwidget is None:
                 self.dockwidget = gbfs_nowDockWidget()
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
-            self.iface.addDockWidget(qt.RightDockWidgetArea, self.dockwidget)
+            self.iface.addDockWidget(
+                enum_value(Qt, "DockWidgetArea", "RightDockWidgetArea"), self.dockwidget
+            )
         self.dockwidget.show()
 
     def onClosePlugin(self):

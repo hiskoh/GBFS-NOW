@@ -18,13 +18,12 @@ from .gbfs_now_core.labels import label_language
 from .gbfs_now_core.layers import LayerBuilder
 from .gbfs_now_core.qt_compat import (
     class_enum,
-    compatible_qt,
-    qgis_message_level,
+    enum_value,
+    log_message_level,
     size_policy,
 )
 
 
-qt = compatible_qt(Qt)
 
 
 FORM_CLASS, _ = uic.loadUiType(
@@ -41,7 +40,7 @@ def _debug(message, warning=False):
     QgsMessageLog.logMessage(
         str(message),
         "GBFS-NOW DEBUG",
-        qgis_message_level(Qgis, "Warning") if warning else qgis_message_level(Qgis, "Info"),
+        log_message_level(Qgis, warning),
     )
 
 
@@ -99,7 +98,7 @@ class FeedCard(QtWidgets.QFrame):
         self.setObjectName("feedCard")
         self.setStyleSheet(FEED_CARD_STYLE)
         self.setMinimumHeight(48)
-        self.setCursor(qt.PointingHandCursor)
+        self.setCursor(enum_value(Qt, "CursorShape", "PointingHandCursor"))
 
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(7, 4, 7, 4)
@@ -107,11 +106,16 @@ class FeedCard(QtWidgets.QFrame):
 
         self.icon_label = QtWidgets.QLabel(self)
         self.icon_label.setFixedSize(30, 30)
-        self.icon_label.setAlignment(qt.AlignCenter)
+        self.icon_label.setAlignment(enum_value(Qt, "AlignmentFlag", "AlignCenter"))
         pixmap = QtGui.QPixmap(icon_path)
         if not pixmap.isNull():
             self.icon_label.setPixmap(
-                pixmap.scaled(25, 25, qt.KeepAspectRatio, qt.SmoothTransformation)
+                pixmap.scaled(
+                    25,
+                    25,
+                    enum_value(Qt, "AspectRatioMode", "KeepAspectRatio"),
+                    enum_value(Qt, "TransformationMode", "SmoothTransformation"),
+                )
             )
         layout.addWidget(self.icon_label)
 
@@ -128,7 +132,7 @@ class FeedCard(QtWidgets.QFrame):
 
         self.selected_label = QtWidgets.QLabel(self)
         self.selected_label.setFixedSize(18, 18)
-        self.selected_label.setAlignment(qt.AlignCenter)
+        self.selected_label.setAlignment(enum_value(Qt, "AlignmentFlag", "AlignCenter"))
         layout.addWidget(self.selected_label)
 
     def set_preview(self, title, meta, selected, available):
@@ -137,7 +141,11 @@ class FeedCard(QtWidgets.QFrame):
         self.meta_label.setText(meta)
         self.setProperty("selected", selected)
         self.setProperty("available", available)
-        self.setCursor(qt.PointingHandCursor if available else qt.ArrowCursor)
+        self.setCursor(
+            enum_value(Qt, "CursorShape", "PointingHandCursor")
+            if available
+            else enum_value(Qt, "CursorShape", "ArrowCursor")
+        )
 
         if selected:
             icon = self.style().standardIcon(
@@ -152,7 +160,7 @@ class FeedCard(QtWidgets.QFrame):
         self.update()
 
     def mousePressEvent(self, event):
-        if self.available and event.button() == qt.LeftButton:
+        if self.available and event.button() == enum_value(Qt, "MouseButton", "LeftButton"):
             self.clicked.emit(self.feed_name)
         super().mousePressEvent(event)
 
@@ -510,8 +518,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             class_enum(QtWidgets.QAbstractItemView, "NoEditTriggers")
         )
         self.vehicle_types_table.setAlternatingRowColors(False)
-        self.vehicle_types_table.setVerticalScrollBarPolicy(qt.ScrollBarAlwaysOff)
-        self.vehicle_types_table.setHorizontalScrollBarPolicy(qt.ScrollBarAlwaysOff)
+        scroll_bar_off = enum_value(Qt, "ScrollBarPolicy", "ScrollBarAlwaysOff")
+        self.vehicle_types_table.setVerticalScrollBarPolicy(scroll_bar_off)
+        self.vehicle_types_table.setHorizontalScrollBarPolicy(scroll_bar_off)
         self.vehicle_types_table.horizontalHeader().setStretchLastSection(True)
         self.vehicleInfoLayout.addWidget(self.vehicle_types_table)
 
@@ -566,7 +575,10 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             rich_text = Qt.TextFormat.RichText
         self.service_summary_label.setTextFormat(rich_text)
         self.service_summary_label.setWordWrap(True)
-        self.service_summary_label.setAlignment(qt.AlignTop | qt.AlignLeft)
+        self.service_summary_label.setAlignment(
+            enum_value(Qt, "AlignmentFlag", "AlignTop")
+            | enum_value(Qt, "AlignmentFlag", "AlignLeft")
+        )
         self.service_summary_label.setSizePolicy(
             size_policy(QtWidgets.QSizePolicy, "Expanding"),
             size_policy(QtWidgets.QSizePolicy, "Preferred"),
@@ -980,7 +992,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def _toggle_service_information(self, checked):
         self.serviceContent.setVisible(checked and self.serviceToggleButton.isVisible())
-        self.serviceToggleButton.setArrowType(qt.UpArrow if checked else qt.DownArrow)
+        self.serviceToggleButton.setArrowType(
+            enum_value(Qt, "ArrowType", "UpArrow" if checked else "DownArrow")
+        )
         self.serviceToggleButton.setToolTip(
             self._text("collapse_service") if checked else self._text("expand_service")
         )
@@ -989,7 +1003,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.vehicleInfoContent.setVisible(
             checked and self.vehicleInfoToggleButton.isVisible()
         )
-        self.vehicleInfoToggleButton.setArrowType(qt.UpArrow if checked else qt.DownArrow)
+        self.vehicleInfoToggleButton.setArrowType(
+            enum_value(Qt, "ArrowType", "UpArrow" if checked else "DownArrow")
+        )
         self.vehicleInfoToggleButton.setToolTip(
             self._text("collapse_vehicle") if checked else self._text("expand_vehicle")
         )
@@ -1129,7 +1145,9 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def _set_busy(self, busy):
         self._busy = busy
         if busy:
-            QtWidgets.QApplication.setOverrideCursor(qt.WaitCursor)
+            QtWidgets.QApplication.setOverrideCursor(
+                enum_value(Qt, "CursorShape", "WaitCursor")
+            )
         else:
             QtWidgets.QApplication.restoreOverrideCursor()
 

@@ -39,6 +39,15 @@ def compatible_qt(qt):
     return CompatibleQt(qt)
 
 
+def enum_value(qt, enum_class_name, value_name):
+    enum_class = getattr(qt, enum_class_name, None)
+    if enum_class is not None:
+        value = getattr(enum_class, value_name, None)
+        if value is not None:
+            return value
+    return getattr(qt, value_name)
+
+
 def size_policy(policy, name):
     value = getattr(policy, name, None)
     if value is not None:
@@ -62,11 +71,15 @@ def network_reply_no_error(reply_class):
     value = getattr(reply_class, "NoError", None)
     if value is not None:
         return value
-    return reply_class.NetworkError.NoError
+    return getattr(getattr(reply_class, "NetworkError"), "NoError")
 
 
 def qgis_message_level(qgis, name):
     value = getattr(qgis, name, None)
     if value is not None:
         return value
-    return getattr(qgis.MessageLevel, name)
+    return getattr(getattr(qgis, "MessageLevel"), name)
+
+
+def log_message_level(qgis, warning=False):
+    return qgis_message_level(qgis, "Warning" if warning else "Info")
