@@ -5,7 +5,7 @@
 
 GBFS（General Bikeshare Feed Specification）はマイクロモビリティデータの国際標準規格で、多くのシェアモビリティ事業者が本規格でデータを公開しています。  GBFSデータの仕様は下記のGithubで公開されています。  
 
-https://github.com/NABSA/gbfs  
+https://github.com/MobilityData/gbfs
 
 なお日本国内において2022年11月13日時点で対応しているサービスは次の２サービスです。  
 
@@ -24,7 +24,7 @@ https://github.com/NABSA/gbfs
  
  
 > **Note**
-> このQGISプラグインはQGIS3.2およびGBFSver2.3で動作確認をしています。
+> このQGISプラグインはGBFS v1、v2、v3のauto-discovery feedに対応しています。
 
 <img width="600" alt="plugin_image" src="https://user-images.githubusercontent.com/13606213/201525729-d4ba1e0d-beb2-490e-a3ed-b545a4602678.png">
 
@@ -49,9 +49,10 @@ GBFSを見るまでに３ステップあります。
   
 メインファイルのファイル名は"gbfs.json"です。   
 直接URLを入力するか、ツールボタンからカタログリストを表示して公開されているGBFSを選択してください。  
+星ボタンから、よく使うGBFS auto-discovery URLをお気に入りとして保存できます。
 カタログリストはこちらのURLから取得しています。  
   
-https://github.com/NABSA/gbfs/blob/master/systems.csv  
+https://github.com/MobilityData/gbfs/blob/master/systems.csv
   
 
 詳細ボタンを選択すると、GBFS公式Githubより各社のGBFSデータのURLが一覧表示されます。どれか一行を選択してウィンドウを閉じると、URLが転記されます。  
@@ -60,16 +61,15 @@ https://github.com/NABSA/gbfs/blob/master/systems.csv
 
 ## 2.言語選択  
   
-指定したGBFSファイルが多言語対応している場合、GBFSメインファイルには各言語のファイルリンクが入っています（多言語対応の状況は事業者に依存します）。  
-対応言語の一覧が表示されるので、選択してください。未選択の場合、最初の言語が選択されます。  
+GBFS v1/v2では、通常 `gbfs.json` に言語別のファイルリンクが含まれます。GBFS v3では、`gbfs.json` は単一のfeed一覧になり、対応言語は主に `system_information.json` の `languages` で示されます。
+GBFS-NOWはどちらの構造も自動判定します。対応言語が複数ある場合は、言語を選択してから対象feedを確認します。言語が1つだけの場合は、自動で次のステップへ進みます。
+読み込み後、作成できるレイヤがカードで表示され、取得済みのfeedでは件数と更新時刻が表示されます。公開されていないfeedはグレーアウトされます。
   
 <img width="600" alt="language_image" src="https://user-images.githubusercontent.com/13606213/201525383-cb9a4124-3a65-43fa-93b0-9032d06b6614.png">
   
-## 3.各種表示設定  
+## 3.プレビューとレイヤ作成  
   
-2条件を設定します。  
-・ステーションの現況を表示するか否か（"station_status.json"）  
-・表示する際、カラム名（列名）を日本語表記するか否か  
+作成するレイヤをカードで選択し、必要に応じて日本語のフィールド別名を使うかを指定してから地図に追加します。公開されていないfeedは自動で選択不可になります。
   
  <img width="600" alt="setting_image" src="https://user-images.githubusercontent.com/13606213/201525437-7374f795-cda1-4216-a8a5-ae9754a391a8.png">
 
@@ -81,7 +81,7 @@ https://github.com/NABSA/gbfs/blob/master/systems.csv
 - システム概要　　　：システム名、システム運用事業者名、サービスURL、アプリStorリンクなど  
 - ステーション情報　：ステーション名、緯度経度、最大駐輪可能台数（ラック数）など  ※ステーション型サービスの場合
 - ステーション現況　：貸出可能台数、駐輪可能台数、営業時間内/外、データ更新時点 　※ステーション型サービスの場合
-- フリー車両情報　　：車両現在地、予約状況など　※ドックレス型サービスの場合
+- 車両情報　　　　　：車両現在地、予約状況など　※GBFS v1/v2では `free_bike_status`、GBFS v3では `vehicle_status` から表示
 
 <img width="600" alt="plugin_image2" src="https://user-images.githubusercontent.com/13606213/201525624-fddfc9ff-12c8-42eb-9b8d-1dc0082427a7.png">
 

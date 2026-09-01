@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>GBFS Catalog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -68,7 +68,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Please select the Bikeshare-Service</string>
+      <string>Select a GBFS system</string>
      </property>
     </widget>
    </item>
@@ -171,7 +171,7 @@
       </font>
      </property>
      <property name="text">
-      <string>from the Github repository &quot;https://raw.githubusercontent.com/MobilityData/gbfs/master/systems.csv&quot;</string>
+      <string>MobilityData GBFS systems catalog</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
