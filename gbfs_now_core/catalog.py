@@ -3,10 +3,8 @@
 import csv
 from io import StringIO
 import threading
-import urllib.error
-import urllib.request
 
-from .client import DEFAULT_TIMEOUT_SECONDS, validate_http_url
+from .client import DEFAULT_TIMEOUT_SECONDS, GbfsClient, GbfsClientError
 
 
 SYSTEMS_CSV_URL = "https://raw.githubusercontent.com/MobilityData/gbfs/master/systems.csv"
@@ -95,18 +93,10 @@ def _download_and_store(timeout):
 
 
 def _download_systems_catalog(timeout):
-    request = urllib.request.Request(
-        validate_http_url(SYSTEMS_CSV_URL),
-        headers={"User-Agent": "GBFS-NOW QGIS Plugin"},
-    )
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            encoding = response.headers.get_content_charset() or "utf-8"
-            text = response.read().decode(encoding)
-    except urllib.error.HTTPError as error:
-        raise CatalogError("HTTP {} for {}".format(error.code, SYSTEMS_CSV_URL)) from error
-    except urllib.error.URLError as error:
-        raise CatalogError("{}: {}".format(SYSTEMS_CSV_URL, error.reason)) from error
+        text = GbfsClient(timeout).get_text(SYSTEMS_CSV_URL)
+    except GbfsClientError as error:
+        raise CatalogError(str(error)) from error
 
     reader = csv.DictReader(StringIO(text), skipinitialspace=True)
     headers = reader.fieldnames or FALLBACK_HEADERS
