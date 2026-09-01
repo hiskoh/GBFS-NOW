@@ -9,7 +9,7 @@ from .gbfs_now_core.catalog import CatalogError, fetch_systems_catalog
 from .gbfs_now_core.qt_compat import class_enum, compatible_qt
 
 
-Qt = compatible_qt(Qt)
+qt = compatible_qt(Qt)
 from .gbfs_now_core.table_models import ListTableModel
 from .gbfs_now_core import ui_text
 
@@ -46,7 +46,7 @@ class gbfs_now_search_Dialog(QtWidgets.QDialog):
         self.label_3.setText(self._text("search_label"))
         self.searchbar.setPlaceholderText(self._text("search_catalog_placeholder"))
         self.proxy_model.setFilterKeyColumn(-1)
-        self.proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        self.proxy_model.setFilterCaseSensitivity(qt.CaseInsensitive)
         self.gbfs_list.setModel(self.proxy_model)
         self.gbfs_list.setSelectionBehavior(
             class_enum(QtWidgets.QAbstractItemView, "SelectRows")
@@ -75,7 +75,7 @@ class gbfs_now_search_Dialog(QtWidgets.QDialog):
         self.proxy_model.setSourceModel(model)
         self.gbfs_list.resizeColumnsToContents()
         if rows and len(headers) > 1:
-            self.gbfs_list.sortByColumn(1, Qt.AscendingOrder)
+            self.gbfs_list.sortByColumn(1, qt.AscendingOrder)
 
     def _text(self, key, **values):
         return ui_text.text(key, self.ui_language, **values)

@@ -22,6 +22,7 @@ except ImportError:
 
 from . import compat
 from .labels import field_label
+from .qt_compat import qgis_message_level
 
 
 STATION_FIELDS = [
@@ -287,7 +288,9 @@ class LayerBuilder:
         )
         if skipped:
             message += ", {} skipped without valid coordinates".format(skipped)
-        level = Qgis.Warning if added != candidates and Qgis is not None else Qgis.Info
+        level = qgis_message_level(
+            Qgis, "Warning" if added != candidates and Qgis is not None else "Info"
+        )
         QgsMessageLog.logMessage(message, "GBFS-NOW", level)
 
     @staticmethod

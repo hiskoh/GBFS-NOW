@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import xml.etree.ElementTree as ET
 from functools import lru_cache
+from html.parser import HTMLParser
 
 try:
     from qgis.PyQt.QtCore import QCoreApplication
@@ -13,6 +13,40 @@ except ImportError:
 EN = "en"
 JA = "ja"
 CONTEXT = "gbfs_now"
+
+
+class _TsTranslationParser(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.translations = {}
+        self._source = None
+        self._translation = None
+        self._current_tag = None
+        self._translation_unfinished = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "message":
+            self._source = None
+            self._translation = None
+            self._translation_unfinished = False
+        elif tag == "source":
+            self._current_tag = "source"
+        elif tag == "translation":
+            self._current_tag = "translation"
+            self._translation_unfinished = dict(attrs).get("type") == "unfinished"
+
+    def handle_endtag(self, tag):
+        if tag == "source" or tag == "translation":
+            self._current_tag = None
+        elif tag == "message":
+            if self._source and self._translation is not None and not self._translation_unfinished:
+                self.translations[self._source] = self._translation
+
+    def handle_data(self, data):
+        if self._current_tag == "source":
+            self._source = (self._source or "") + data
+        elif self._current_tag == "translation":
+            self._translation = (self._translation or "") + data
 
 SOURCES = {
     "add_to_map": "Add to Map",
@@ -143,17 +177,10 @@ def _translation_map(language):
         "gbfs_now_{}.ts".format(language),
     )
     try:
-        tree = ET.parse(path)
-    except (OSError, ET.ParseError):
+        with open(path, encoding="utf-8") as translation_file:
+            parser = _TsTranslationParser()
+            parser.feed(translation_file.read())
+            parser.close()
+    except (OSError, ValueError):
         return {}
-
-    translations = {}
-    for message in tree.findall(".//message"):
-        source = message.findtext("source")
-        translation = message.find("translation")
-        if source is None or translation is None:
-            continue
-        if translation.get("type") == "unfinished":
-            continue
-        translations[source] = translation.text or ""
-    return translations
+    return parser.translations

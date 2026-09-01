@@ -4,6 +4,7 @@ import json
 import socket
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 
 from .compat import Discovery, feed_url
 
@@ -13,6 +14,15 @@ class GbfsClientError(RuntimeError):
 
 
 DEFAULT_TIMEOUT_SECONDS = 20
+ALLOWED_URL_SCHEMES = frozenset(("http", "https"))
+
+
+def validate_http_url(url):
+    value = str(url or "").strip()
+    parsed = urlsplit(value)
+    if parsed.scheme.lower() not in ALLOWED_URL_SCHEMES or not parsed.netloc:
+        raise GbfsClientError("Only HTTP(S) URLs with a host are supported: {}".format(value))
+    return value
 
 
 class GbfsClient:
@@ -21,17 +31,18 @@ class GbfsClient:
         self.headers = {"User-Agent": "GBFS-NOW QGIS Plugin"}
 
     def get_json(self, url):
-        request = urllib.request.Request(url, headers=self.headers)
+        safe_url = validate_http_url(url)
+        request = urllib.request.Request(safe_url, headers=self.headers)
         try:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:
                 encoding = response.headers.get_content_charset() or "utf-8"
                 return json.loads(response.read().decode(encoding))
         except urllib.error.HTTPError as error:
-            raise GbfsClientError("HTTP {} for {}".format(error.code, url)) from error
+            raise GbfsClientError("HTTP {} for {}".format(error.code, safe_url)) from error
         except (socket.timeout, TimeoutError) as error:
-            raise GbfsClientError("Timed out while loading {}".format(url)) from error
+            raise GbfsClientError("Timed out while loading {}".format(safe_url)) from error
         except urllib.error.URLError as error:
-            raise GbfsClientError("{}: {}".format(url, error.reason)) from error
+            raise GbfsClientError("{}: {}".format(safe_url, error.reason)) from error
 
     def load_discovery(self, url):
         raw = self.get_json(url)

@@ -11,7 +11,7 @@ from . import compat
 from .qt_compat import compatible_qt, network_reply_no_error
 
 
-Qt = compatible_qt(Qt)
+qt = compatible_qt(Qt)
 
 
 SYSTEM_LABELS = [
@@ -276,7 +276,7 @@ def _set_pixmap(target_label, pixmap):
     width = target_label.width() or target_label.maximumWidth() or 100
     height = target_label.height() or target_label.maximumHeight() or 80
     target_label.setPixmap(
-        pixmap.scaled(width, height, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        pixmap.scaled(width, height, qt.KeepAspectRatio, qt.SmoothTransformation)
     )
 
 

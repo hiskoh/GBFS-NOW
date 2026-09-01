@@ -63,3 +63,10 @@ def network_reply_no_error(reply_class):
     if value is not None:
         return value
     return reply_class.NetworkError.NoError
+
+
+def qgis_message_level(qgis, name):
+    value = getattr(qgis, name, None)
+    if value is not None:
+        return value
+    return getattr(qgis.MessageLevel, name)

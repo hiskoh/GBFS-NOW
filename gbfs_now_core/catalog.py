@@ -6,7 +6,7 @@ import threading
 import urllib.error
 import urllib.request
 
-from .client import DEFAULT_TIMEOUT_SECONDS
+from .client import DEFAULT_TIMEOUT_SECONDS, validate_http_url
 
 
 SYSTEMS_CSV_URL = "https://raw.githubusercontent.com/MobilityData/gbfs/master/systems.csv"
@@ -96,7 +96,7 @@ def _download_and_store(timeout):
 
 def _download_systems_catalog(timeout):
     request = urllib.request.Request(
-        SYSTEMS_CSV_URL,
+        validate_http_url(SYSTEMS_CSV_URL),
         headers={"User-Agent": "GBFS-NOW QGIS Plugin"},
     )
     try:

@@ -8,7 +8,7 @@ from . import compat
 from .qt_compat import compatible_qt, network_reply_no_error
 
 
-Qt = compatible_qt(Qt)
+qt = compatible_qt(Qt)
 
 
 class ListTableModel(QAbstractTableModel):
@@ -25,11 +25,11 @@ class ListTableModel(QAbstractTableModel):
 
     def flags(self, index):
         if not index.isValid():
-            return Qt.NoItemFlags
-        return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+            return qt.NoItemFlags
+        return qt.ItemIsEnabled | qt.ItemIsSelectable
 
     def data(self, index, role):
-        if not index.isValid() or role not in (Qt.DisplayRole, Qt.EditRole):
+        if not index.isValid() or role not in (qt.DisplayRole, qt.EditRole):
             return None
         row = index.row()
         column = index.column()
@@ -38,9 +38,9 @@ class ListTableModel(QAbstractTableModel):
         return self.rows[row][column]
 
     def headerData(self, section, orientation, role):
-        if role != Qt.DisplayRole:
+        if role != qt.DisplayRole:
             return None
-        if orientation == Qt.Horizontal:
+        if orientation == qt.Horizontal:
             if section < len(self.headers):
                 return self.headers[section]
             return ""
@@ -123,13 +123,13 @@ class VehicleTypesTableModel(QAbstractTableModel):
         if not index.isValid():
             return None
 
-        if role == Qt.DisplayRole:
+        if role == qt.DisplayRole:
             if 0 <= index.row() < len(self.rows):
                 row = self.rows[index.row()]
                 if 0 <= index.column() < len(row):
                     return row[index.column()]
 
-        if role == Qt.DecorationRole:
+        if role == qt.DecorationRole:
             image_url = self._image_url_for(index.row(), index.column())
             if image_url:
                 return self.image_cache.get(image_url)
@@ -150,9 +150,9 @@ class VehicleTypesTableModel(QAbstractTableModel):
         return None
 
     def headerData(self, section, orientation, role):
-        if role != Qt.DisplayRole:
+        if role != qt.DisplayRole:
             return None
-        if orientation == Qt.Horizontal:
+        if orientation == qt.Horizontal:
             return "vehicle {}".format(section + 1)
         if section < len(self.headers):
             return self.headers[section]
@@ -179,12 +179,12 @@ class VehicleTypesTableModel(QAbstractTableModel):
         if reply.error() == network_reply_no_error(QNetworkReply):
             pixmap = QPixmap()
             pixmap.loadFromData(reply.readAll())
-            self.image_cache[url] = QIcon(pixmap.scaled(220, 220, Qt.KeepAspectRatio))
+            self.image_cache[url] = QIcon(pixmap.scaled(220, 220, qt.KeepAspectRatio))
         elif self.fallback_icon:
             self.image_cache[url] = QIcon(self.fallback_icon)
 
         if self.rowCount() and self.columnCount():
             top_left = self.index(0, 0)
             bottom_right = self.index(self.rowCount() - 1, self.columnCount() - 1)
-            self.dataChanged.emit(top_left, bottom_right, [Qt.DecorationRole])
+            self.dataChanged.emit(top_left, bottom_right, [qt.DecorationRole])
         reply.deleteLater()

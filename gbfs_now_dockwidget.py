@@ -16,10 +16,15 @@ from .gbfs_now_core.client import GbfsClient, GbfsClientError
 from .gbfs_now_core.compat import DEFAULT_LANGUAGE, records
 from .gbfs_now_core.labels import label_language
 from .gbfs_now_core.layers import LayerBuilder
-from .gbfs_now_core.qt_compat import class_enum, compatible_qt, size_policy
+from .gbfs_now_core.qt_compat import (
+    class_enum,
+    compatible_qt,
+    qgis_message_level,
+    size_policy,
+)
 
 
-Qt = compatible_qt(Qt)
+qt = compatible_qt(Qt)
 
 
 FORM_CLASS, _ = uic.loadUiType(
@@ -36,7 +41,7 @@ def _debug(message, warning=False):
     QgsMessageLog.logMessage(
         str(message),
         "GBFS-NOW DEBUG",
-        Qgis.Warning if warning else Qgis.Info,
+        qgis_message_level(Qgis, "Warning") if warning else qgis_message_level(Qgis, "Info"),
     )
 
 
@@ -94,7 +99,7 @@ class FeedCard(QtWidgets.QFrame):
         self.setObjectName("feedCard")
         self.setStyleSheet(FEED_CARD_STYLE)
         self.setMinimumHeight(48)
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(qt.PointingHandCursor)
 
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(7, 4, 7, 4)
@@ -102,11 +107,11 @@ class FeedCard(QtWidgets.QFrame):
 
         self.icon_label = QtWidgets.QLabel(self)
         self.icon_label.setFixedSize(30, 30)
-        self.icon_label.setAlignment(Qt.AlignCenter)
+        self.icon_label.setAlignment(qt.AlignCenter)
         pixmap = QtGui.QPixmap(icon_path)
         if not pixmap.isNull():
             self.icon_label.setPixmap(
-                pixmap.scaled(25, 25, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                pixmap.scaled(25, 25, qt.KeepAspectRatio, qt.SmoothTransformation)
             )
         layout.addWidget(self.icon_label)
 
@@ -123,7 +128,7 @@ class FeedCard(QtWidgets.QFrame):
 
         self.selected_label = QtWidgets.QLabel(self)
         self.selected_label.setFixedSize(18, 18)
-        self.selected_label.setAlignment(Qt.AlignCenter)
+        self.selected_label.setAlignment(qt.AlignCenter)
         layout.addWidget(self.selected_label)
 
     def set_preview(self, title, meta, selected, available):
@@ -132,7 +137,7 @@ class FeedCard(QtWidgets.QFrame):
         self.meta_label.setText(meta)
         self.setProperty("selected", selected)
         self.setProperty("available", available)
-        self.setCursor(Qt.PointingHandCursor if available else Qt.ArrowCursor)
+        self.setCursor(qt.PointingHandCursor if available else qt.ArrowCursor)
 
         if selected:
             icon = self.style().standardIcon(
@@ -147,7 +152,7 @@ class FeedCard(QtWidgets.QFrame):
         self.update()
 
     def mousePressEvent(self, event):
-        if self.available and event.button() == Qt.LeftButton:
+        if self.available and event.button() == qt.LeftButton:
             self.clicked.emit(self.feed_name)
         super().mousePressEvent(event)
 
@@ -505,8 +510,8 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             class_enum(QtWidgets.QAbstractItemView, "NoEditTriggers")
         )
         self.vehicle_types_table.setAlternatingRowColors(False)
-        self.vehicle_types_table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.vehicle_types_table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.vehicle_types_table.setVerticalScrollBarPolicy(qt.ScrollBarAlwaysOff)
+        self.vehicle_types_table.setHorizontalScrollBarPolicy(qt.ScrollBarAlwaysOff)
         self.vehicle_types_table.horizontalHeader().setStretchLastSection(True)
         self.vehicleInfoLayout.addWidget(self.vehicle_types_table)
 
@@ -561,7 +566,7 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
             rich_text = Qt.TextFormat.RichText
         self.service_summary_label.setTextFormat(rich_text)
         self.service_summary_label.setWordWrap(True)
-        self.service_summary_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self.service_summary_label.setAlignment(qt.AlignTop | qt.AlignLeft)
         self.service_summary_label.setSizePolicy(
             size_policy(QtWidgets.QSizePolicy, "Expanding"),
             size_policy(QtWidgets.QSizePolicy, "Preferred"),
@@ -975,7 +980,7 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     def _toggle_service_information(self, checked):
         self.serviceContent.setVisible(checked and self.serviceToggleButton.isVisible())
-        self.serviceToggleButton.setArrowType(Qt.UpArrow if checked else Qt.DownArrow)
+        self.serviceToggleButton.setArrowType(qt.UpArrow if checked else qt.DownArrow)
         self.serviceToggleButton.setToolTip(
             self._text("collapse_service") if checked else self._text("expand_service")
         )
@@ -984,7 +989,7 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.vehicleInfoContent.setVisible(
             checked and self.vehicleInfoToggleButton.isVisible()
         )
-        self.vehicleInfoToggleButton.setArrowType(Qt.UpArrow if checked else Qt.DownArrow)
+        self.vehicleInfoToggleButton.setArrowType(qt.UpArrow if checked else qt.DownArrow)
         self.vehicleInfoToggleButton.setToolTip(
             self._text("collapse_vehicle") if checked else self._text("expand_vehicle")
         )
@@ -1124,7 +1129,7 @@ class gbfs_nowDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def _set_busy(self, busy):
         self._busy = busy
         if busy:
-            QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
+            QtWidgets.QApplication.setOverrideCursor(qt.WaitCursor)
         else:
             QtWidgets.QApplication.restoreOverrideCursor()
 
